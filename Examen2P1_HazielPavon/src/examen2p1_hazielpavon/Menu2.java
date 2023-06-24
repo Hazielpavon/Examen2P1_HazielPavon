@@ -4,6 +4,7 @@
  */
 package examen2p1_hazielpavon;
 
+import static examen2p1_hazielpavon.Numero.baseToDec;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
@@ -37,11 +38,21 @@ public class Menu2 extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(51, 255, 255));
 
         Operaciones.setText("Operaciones");
+        Operaciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                OperacionesActionPerformed(evt);
+            }
+        });
 
         Salir.setText("Salir");
         Salir.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 SalirMouseClicked(evt);
+            }
+        });
+        Salir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SalirActionPerformed(evt);
             }
         });
 
@@ -58,31 +69,33 @@ public class Menu2 extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(140, 140, 140))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(136, 136, 136)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Salir)
-                            .addComponent(Numeros)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(126, 126, 126)
-                        .addComponent(Operaciones)))
-                .addContainerGap(172, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(Operaciones)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addGap(136, 136, 136)
+                            .addComponent(Salir, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(Numeros, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(162, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
+                .addGap(50, 50, 50)
                 .addComponent(Numeros)
-                .addGap(38, 38, 38)
+                .addGap(43, 43, 43)
                 .addComponent(Operaciones)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                .addGap(47, 47, 47)
                 .addComponent(Salir)
-                .addGap(48, 48, 48))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -91,7 +104,7 @@ public class Menu2 extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -103,7 +116,7 @@ public class Menu2 extends javax.swing.JFrame {
 
     static ArrayList<Numero> listar = new ArrayList<>();
     static Numero n = new Numero();
-
+    static boolean vali2 = false;
     private void SalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SalirMouseClicked
         System.exit(0);
     }//GEN-LAST:event_SalirMouseClicked
@@ -111,89 +124,132 @@ public class Menu2 extends javax.swing.JFrame {
     private void NumerosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NumerosMouseClicked
 
         boolean seguir = true;
-        boolean vali2 = false;
 
-        while (seguir == true) {
-
+        while (seguir) {
             int opcion = Integer.parseInt(JOptionPane.showInputDialog(null, " "
                     + "1. Agregar Numeros\n"
                     + "2. Eliminar Numeros\n"
                     + "3. Menu Principal\n"
             ));
-            int respu = 0;
-            int z = 0;
-            int respu2 = 0;
+
             switch (opcion) {
-
                 case 1:
-
                     boolean vali = false;
-
-                    while (vali == false) {
-                        String decimal = JOptionPane.showInputDialog(null, " Ingrese el numero decimal: ");
-
-                        int base = Integer.parseInt(JOptionPane.showInputDialog(null, " Ingrese la base: "));
-
+                    while (vali== false) {
+                        String decimal = JOptionPane.showInputDialog(null, "Ingrese el numero decimal:");
+                        int base = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese la base:"));
                         int dec = Integer.parseInt(decimal);
 
-                        if (base <= 35 && base >= 2 && dec > 1) {
+                        if (base >= 2 && base <= 35 && dec > 1) {
                             vali = true;
+
+                            Numero n = new Numero();
                             n.setBase(base);
                             n.setNum(dec);
+                            n.setResp(baseToDec(decimal, base));
 
-                            for (int i = decimal.length()-1 ; i >= 0; i--) {
-                                String x = "";
-                                x += decimal.charAt(i);
-
-                                z += Integer.parseInt(x);
-
-                                if (z != 0) {
-                                    respu += z * (Math.pow(base, i));
-                                } else {
-                                    respu += 0;
-                                }
-                                
-                            }
-                            n.setResp(respu);
-                            Numero n = new Numero(base, dec, respu);
-                            listar.add(n);
-
+                            listar.add(n);  
                         } else {
-
-                            JOptionPane.showMessageDialog(null, " Ingrese un numero mayor a 2 de base y menor que 35 y un numero mayor a 1 como decimal ");
-
+                            JOptionPane.showMessageDialog(null, "Ingrese un numero mayor a 1 como decimal y una base entre 2 y 35.");
                         }
                     }
-
-                    vali2 = true;
                     break;
 
                 case 2:
-
-                    if (vali2 == false) {
-
-                        JOptionPane.showMessageDialog(null, "Ingrese un numero a la lista antes de eliminarlos");
+                    if (listar.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "No hay numeros en la lista para eliminar.");
                     } else {
-                        JOptionPane.showMessageDialog(null, print());
+                        int pos = Integer.parseInt(JOptionPane.showInputDialog(null, print() + "Ingrese el indice del numero que desea eliminar:"));
 
-                        String pos = (JOptionPane.showInputDialog(null, "Ingrese el indice del numero que desee ingresar"));
+                        if (pos >= 1 && pos <= listar.size()) {
+                            listar.remove(pos - 1);
+                            JOptionPane.showMessageDialog(null, "El numero ha sido eliminado correctamente.");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Indice inválido.");
+                        }
                     }
                     break;
 
                 case 3:
                     seguir = false;
-
                     break;
 
+                default:
+                    JOptionPane.showMessageDialog(null, "Opción invalida.");
+                    break;
             }
-
         }
+
 
     }//GEN-LAST:event_NumerosMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
+    private void SalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_SalirActionPerformed
+
+    private void OperacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OperacionesActionPerformed
+
+        boolean seguir = true;
+
+        while (seguir == true) {
+            int opcion = Integer.parseInt(JOptionPane.showInputDialog(null, " "
+                    + "1. Sumar números\n"
+                    + "2. Restar números\n"
+                    + "3. Multiplicar números\n"
+                    + "4. Menu Principal\n"
+            ));
+
+            switch (opcion) {
+                case 1:
+
+                    if (vali2) {
+                        int suma = 0;
+                        for (int i = 0; i < listar.size(); i++) {
+                            suma += Integer.parseInt(listar.get(i).toString());
+                        }
+                        JOptionPane.showMessageDialog(null, "La suma es: " + suma);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Ingrese numeros a la lista antes de realizar la suma.");
+                    }
+                    break;
+
+                case 2:
+                    if (vali2) {
+                        int resta = Integer.parseInt(listar.get(0).toString());
+                        for (int i = 1; i < listar.size(); i++) {
+                            resta -= Integer.parseInt(listar.get(i).toString());
+                        }
+                        JOptionPane.showMessageDialog(null, "La resta es: " + resta);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Ingrese numeros a la lista antes de realizar la resta.");
+                    }
+                    break;
+
+                case 3:
+                    if (vali2) {
+                        int multiplicacion = 1;
+                        for (int i = 0; i < listar.size(); i++) {
+                            multiplicacion *= Integer.parseInt(listar.get(i).toString());
+                        }
+                        JOptionPane.showMessageDialog(null, "La multiplicacion es: " + multiplicacion);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Ingrese números a la lista antes de realizar la multiplicacion.");
+                    }
+                    break;
+
+                case 4:
+                    seguir = false;
+                    break;
+
+                default:
+                    JOptionPane.showMessageDialog(null, "Opcióo invalida");
+                    break;
+            }
+        }
+
+
+    }//GEN-LAST:event_OperacionesActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -205,25 +261,35 @@ public class Menu2 extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Menu2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menu2.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Menu2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menu2.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Menu2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menu2.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Menu2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menu2.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+
             public void run() {
                 new Menu2().setVisible(true);
             }
-        });
+        }
+        );
     }
 
     public static String print() {
